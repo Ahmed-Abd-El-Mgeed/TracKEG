@@ -18,13 +18,15 @@ enum DataResponseError: Error {
   var reason: String {
     switch self {
     case .network:
-      return "An error occurred while fetching data "
+      return NSLocalizedString("reasonNetwork", comment: "")
     case .decoding:
-      return "An error occurred while decoding data"
+      return NSLocalizedString("reasonDecoding", comment: "")
     case .problem:
-        return "An error occurred while fetch data"
+        return NSLocalizedString("reasonProblem", comment: "")
     case .empty:
-        return "There are no data avalible"
+        return NSLocalizedString("reasonEmpty", comment: "")
     }
   }
 }
+
+

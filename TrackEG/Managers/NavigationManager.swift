@@ -19,7 +19,7 @@ public class NavigationManager {
 
     static func tosignIn(_ vc: UIViewController){
         let mainStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        if let desVC = mainStoryboard.instantiateViewController(withIdentifier: "SignInController") as? SignInController {
+        if let desVC = mainStoryboard.instantiateViewController(withIdentifier: "signInController") as? signInController {
             desVC.modalPresentationStyle = .fullScreen
             vc.present(desVC, animated: true)
         }

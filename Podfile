@@ -15,6 +15,9 @@ target 'TrackEG' do
   pod "KRProgressHUD"
   pod 'JGProgressHUD'
   pod 'DropDown'
+  pod 'PMAlertController', "~> 3.5.0"
+  pod 'RxSwift'
+  pod 'RxCocoa'
 
 
 end

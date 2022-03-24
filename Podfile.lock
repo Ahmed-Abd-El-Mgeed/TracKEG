@@ -12,6 +12,13 @@ PODS:
   - KRActivityIndicatorView (3.0.7)
   - KRProgressHUD (3.4.7):
     - KRActivityIndicatorView (= 3.0.7)
+  - PMAlertController (3.5.0)
+  - RxCocoa (6.5.0):
+    - RxRelay (= 6.5.0)
+    - RxSwift (= 6.5.0)
+  - RxRelay (6.5.0):
+    - RxSwift (= 6.5.0)
+  - RxSwift (6.5.0)
   - SwiftyJSON (5.0.1)
 
 DEPENDENCIES:
@@ -22,6 +29,9 @@ DEPENDENCIES:
   - JGProgressHUD
   - Kingfisher
   - KRProgressHUD
+  - PMAlertController (~> 3.5.0)
+  - RxCocoa
+  - RxSwift
   - SwiftyJSON
 
 SPEC REPOS:
@@ -34,6 +44,10 @@ SPEC REPOS:
     - Kingfisher
     - KRActivityIndicatorView
     - KRProgressHUD
+    - PMAlertController
+    - RxCocoa
+    - RxRelay
+    - RxSwift
     - SwiftyJSON
 
 SPEC CHECKSUMS:
@@ -45,8 +59,12 @@ SPEC CHECKSUMS:
   Kingfisher: 3ac0b75b155cabc0e544877d1a4deea29feece92
   KRActivityIndicatorView: ad69e89c4ce40c986cf580595be4829dcad0e35a
   KRProgressHUD: a248f0bc6c9c2aed40a37b76e03ffecc7f85c887
+  PMAlertController: 06dab8160066fc4ce991c880e3722cd403e2926a
+  RxCocoa: 94f817b71c07517321eb4f9ad299112ca8af743b
+  RxRelay: 1de1523e604c72b6c68feadedd1af3b1b4d0ecbd
+  RxSwift: 5710a9e6b17f3c3d6e40d6e559b9fa1e813b2ef8
   SwiftyJSON: 2f33a42c6fbc52764d96f13368585094bfd8aa5e
 
-PODFILE CHECKSUM: a059b5ca7231c0b5aa4106fddb473bce679ca5c8
+PODFILE CHECKSUM: 929f87d1ff2db85b6453eaa619ca69ed0d688ea6
 
 COCOAPODS: 1.11.2
