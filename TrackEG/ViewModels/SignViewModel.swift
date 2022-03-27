@@ -14,20 +14,30 @@ import RxCocoa
 
 
 
-protocol signViewModelDelegate {
+
+
+protocol SignViewModelDelegate {
     func onFetchDataModel(with Data: [LoginModel])
     func onFetchData(with Data: String)
     func onFetchFailed(with reason: String)
 }
 
-public class signViewModel {
+public class SignViewModel {
+    
+    
+    private var loginModelSubject = PublishSubject<LoginModel>()
+    var loadingBehavior = BehaviorRelay<Bool>(value: false)
     
 
+    var loginModelObservable: Observable<LoginModel> {
+        return loginModelSubject
+    }
+  
     
     //delegate to connect the viewModel with View
-    var delegate: signViewModelDelegate!
+    var delegate: SignViewModelDelegate!
 
-    init(delegate: signViewModelDelegate) {
+    init(delegate: SignViewModelDelegate) {
         self.delegate = delegate
     }
     
@@ -41,31 +51,31 @@ public class signViewModel {
             AlertManager.showWrongAlertWithMessage(on: vC , message: NSLocalizedString("internet_failed", comment: ""))
             return
         }
-        Helper.displayLoadingIndicator()
+       // Helper.displayLoadingIndicator()
+        loadingBehavior.accept(true)
         trackEgApi.LoginAPi(email: email , password: password) { (result) in
             switch result {
             case .failure(let error):
                 let theError = error.reason
                 print("theError\(theError)")
                 break
-            case .success(let testData):
-                let checkStautes = testData.status
+            case .success(let loginData):
+                let checkStautes = loginData.status
                 print("ShowTheData\(checkStautes)")
                 if checkStautes == false {
-                    AlertManager.showLoginMobileFailed(on: vC)
+                    AlertManager.showWrongAlertWithMessage(on: vC , message: loginData.welcomeDescription)
                 } else {
-                   self.delegate.onFetchFailed(with: "\(checkStautes)")
-                   self.delegate.onFetchDataModel(with: [testData])
+                    self.loginModelSubject.onNext(loginData)
+                    
+                    self.delegate.onFetchFailed(with: "\(checkStautes)")
+                    self.delegate.onFetchDataModel(with: [loginData])
                 }
                 break
             }
         }
-        Helper.hideLoadindIndicator()
+       // Helper.hideLoadindIndicator()
+        self.loadingBehavior.accept(false)
     }
-    
-    
-
-    
 }
 
 

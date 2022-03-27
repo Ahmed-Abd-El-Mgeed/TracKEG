@@ -7,6 +7,8 @@
 
 import UIKit
 import AuthenticationServices
+import RxSwift
+import RxCocoa
 
 
 
@@ -20,20 +22,27 @@ class signInController: UIViewController   {
     @IBOutlet weak var forgotPassword: UIButton!
     
     
-    var viewModel: signViewModel!
+    var viewModel: SignViewModel!
+    
+    let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setUI()
-        viewModel = signViewModel(delegate: self)
+        setUi()
+        viewModel = SignViewModel(delegate: self)
         viewModel.fetchTestData()
+        
+        
+        subscribeToLoading()
+        subscribeToResponse()
+        subscribeToLoginButton()
         
     }
     override func viewWillAppear(_ animated: Bool) {
     }
     
-    func setUI(){
+    func setUi(){
         emailField.delegate = self
         passwordField.delegate = self
         Utilits.textFieldStyle(textField: emailField, imageName: "")
@@ -44,6 +53,41 @@ class signInController: UIViewController   {
         signInWithApple()
     }
     
+    
+    func subscribeToLoading() {
+        viewModel.loadingBehavior.subscribe(onNext: { (isLoading) in
+            if isLoading {
+                Helper.displayLoadingIndicator()
+            } else {
+                Helper.hideLoadindIndicator()
+            }
+        }).disposed(by: disposeBag)
+    }
+    
+    func subscribeToResponse() {
+        viewModel.loginModelObservable.subscribe(onNext: { value in
+            print("KKKKKK\(value.welcomeDescription)")
+            if value.status == true {
+                print(value.welcomeDescription)
+            
+            } else {
+                print("RRRRRRR")
+            }
+        }).disposed(by: disposeBag)
+    }
+
+    
+    func subscribeToLoginButton() {
+        forgotPassword.rx.tap
+            .throttle(RxTimeInterval.milliseconds(500), scheduler: MainScheduler.instance)
+            .subscribe(onNext: { [weak self](_) in
+                guard let self = self else { return }
+                self.viewModel.fetchLoginData(email: "userName", password: "password" , vC: self)
+        }).disposed(by: disposeBag)
+        
+    }
+    
+   
     @IBAction func SignInAction(_ sender: Any) {
         guard let userName = self.emailField.text else {return}
         guard let password = self.passwordField.text else {return}
@@ -59,7 +103,7 @@ class signInController: UIViewController   {
     }
 }
 
-extension signInController: signViewModelDelegate {
+extension signInController: SignViewModelDelegate {
     func onFetchDataModel(with Data: [LoginModel]) {
         print("TheLoginModelIs\(Data)")
     }
